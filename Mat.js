@@ -23,21 +23,26 @@ function createClass(Constructor){
 			this.row=l;
 			this.column=c;
 			if(arguments.length>=3){
-				if(Matrix.instanceofTypedArray&&(fill===0))return;
+				if(Matrix._instanceofTypedArray&&(fill===0))return;
 				this.fill(fill);
 			}
 		}
 		fill(n=0){
-			if(super.fill){super.fill(n);}
-			else{for(var i=this.length;i--;)this[i]=n;}
+			try{
+				super.fill(n);
+			}catch(e){
+				for(let i=this.length;i--;)this[i]=n;
+			}
 			return this;
 		}
 		set(arr,offset){
-			if(super.set){super.set(arr,offset);}
-			else{
-				let len=this.length<arr.length?this.length:arr.length;
-				for(let i=offset||0;i<len;i++)this[i]=arr[i];
-			}
+			offset||(offset=0);
+			for(let i=(arr.length+offset)<=this.length?arr.length:(this.length-offset);i--;)
+				this[offset+i]=arr[i];
+			return this;
+		}
+		put(m,row=0,column=0){
+			Matrix.put(this,m,row,column);
 			return this;
 		}
 		rotate2d(t){
@@ -55,6 +60,9 @@ function createClass(Constructor){
 		scale3d(x,y,z){
 			return this.set(Matrix.scale3d(this,x,y,z,Matrix.Matrixs.T4));
 		}
+		translate3d(x,y,z){
+			return this.set(Matrix.translate3d(this,x,y,z,Matrix.Matrixs.T4));
+		}
 		rotateX(t){
 			return this.set(Matrix.rotateX(this,t,Matrix.Matrixs.T4));
 		}
@@ -71,7 +79,7 @@ function createClass(Constructor){
 			if(this.length === 0)return '';
 			for(var i=0,lines=[],tmp=[];i<this.length;i++){
 				if(i && (i%this.column === 0)){
-					lines.push(tmp.join('	'));
+					lines.push(tmp.join('\t'));
 					tmp.length=0;
 				}
 				tmp.push(this[i]);
@@ -88,8 +96,8 @@ function createClass(Constructor){
 		}
 		static multiply(a,b,result){
 			if(a.column!==b.row)throw('wrong matrix');
-			var row=a.row,column=Math.min(a.column,b.column),r=result||new Matrix(row,column),l,c,i,ind;
-			for(l=row;l--;){
+			let row=a.row,column=Math.min(a.column,b.column),r=result||new Matrix(row,column),c,i,ind;
+			for(let l=row;l--;){
 				for(c=column;c--;){
 					r[ind=(l*r.column+c)]=0;
 					for(i=a.column;i--;){
@@ -114,40 +122,39 @@ function createClass(Constructor){
 		}
 		static add(a,b,result){
 			if(a.column!==b.column || a.row!==b.row)throw('wrong matrix');
-			var r=result||new Matrix(a.row,a.column);
-			for(var i=a.length;i--;)r[i]=a[i]+b[i];
+			let r=result||new Matrix(a.row,a.column);
+			for(let i=a.length;i--;)r[i]=a[i]+b[i];
 			return r;
 		}
 		static minus(a,b,result){
 			if(a.column!==b.column || a.row!==b.row)throw('wrong matrix');
-			var r=result||new Matrix(a.row,a.column);
-			for(var i=a.length;i--;)r[i]=a[i]-b[i];
+			let r=result||new Matrix(a.row,a.column);
+			for(let i=a.length;i--;)r[i]=a[i]-b[i];
 			return r;
 		}
 		static rotate2d(m,t,result){
-			var Mr=Matrix.Matrixs.rotate2d;
+			const Mr=Matrix.Matrixs.rotate2d;
 			Mr[0]=Mr[4]=Math.cos(t);
 			Mr[1]=-(Mr[3]=Math.sin(t));
 			return Matrix.multiply(Mr,m,result||new Matrix(3,3));
 		}
 		static scale2d(m,x,y,result){
-			var Mr=Matrix.Matrixs.scale2d;
+			const Mr=Matrix.Matrixs.scale2d;
 			Mr[0]=x;
 			Mr[4]=y;
 			return Matrix.multiply(Mr,m,result||new Matrix(3,3));
 		}
 		static translate2d(m,x,y,result){
-			var Mr=Matrix.Matrixs.translate2d;
+			const Mr=Matrix.Matrixs.translate2d;
 			Mr[2]=x;
 			Mr[5]=y;
 			return Matrix.multiply(Mr,m,result||new Matrix(3,3));
 		}
 		static rotate3d(m,tx,ty,tz,result){
-			var Xc=Math.cos(tx),Xs=Math.sin(tx),
+			const Xc=Math.cos(tx),Xs=Math.sin(tx),
 				Yc=Math.cos(ty),Ys=Math.sin(ty),
 				Zc=Math.cos(tz),Zs=Math.sin(tz),
 				Mr=Matrix.Matrixs.rotate3d;
-
 			Mr[0]=Zc*Yc;
 			Mr[1]=Zc*Ys*Xs-Zs*Xc;
 			Mr[2]=Zc*Ys*Xc+Zs*Xs;
@@ -160,47 +167,66 @@ function createClass(Constructor){
 			return Matrix.multiply(Mr,m,result||new Matrix(4,4));
 		}
 		static rotateX(m,t,result){
-			var Mr=Matrix.Matrixs.rotateX;
+			const Mr=Matrix.Matrixs.rotateX;
 			Mr[10]=Mr[5]=Math.cos(t);
 			Mr[6]=-(Mr[9]=Math.sin(t));
 			return Matrix.multiply(Mr,m,result||new Matrix(4,4));
 		}
 		static rotateY(m,t,result){
-			var Mr=Matrix.Matrixs.rotateY;
+			const Mr=Matrix.Matrixs.rotateY;
 			Mr[10]=Mr[0]=Math.cos(t);
 			Mr[8]=-(Mr[2]=Math.sin(t));
 			return Matrix.multiply(Mr,m,result||new Matrix(4,4));
 		}
 		static rotateZ(m,t,result){
-			var Mr=Matrix.Matrixs.rotateZ;
+			const Mr=Matrix.Matrixs.rotateZ;
 			Mr[5]=Mr[0]=Math.cos(t);
 			Mr[1]=-(Mr[4]=Math.sin(t));
 			return Matrix.multiply(Mr,m,result||new Matrix(4,4));
 		}
 		static scale3d(m,x,y,z,result){
-			var Mr=Matrix.Matrixs.scale3d;
+			const Mr=Matrix.Matrixs.scale3d;
 			Mr[0]=x;
 			Mr[5]=y;
 			Mr[10]=z;
 			return Matrix.multiply(Mr,m,result||new Matrix(4,4));
 		}
+		static translate3d(m,x,y,z,result){
+			const Mr=Matrix.Matrixs.translate3d;
+			Mr[12]=x;
+			Mr[13]=y;
+			Mr[14]=z;
+			return Matrix.multiply(Mr,m,result||new Matrix(4,4));
+		}
+		static put(m,sub,row=0,column=0){
+			let c,ind,i;
+			for(let l=sub.row;l--;){
+				if(l+row>=m.row)continue;
+				for(c=sub.column;c--;){
+					if(c+column>=m.column)continue;
+					m[(l+row)*m.column+c+column]=sub[l*sub.column+c];
+				}
+			}
+		}
 		static createClass(Constructor){
 			return createClass(Constructor);
 		}
 	}
-	Matrix.Matrixs={//do not modify these matrixes manually
+	Matrix.Matrixs={//do not modify these matrixes manually and dont use them
 		T3:new Matrix(3,3,0),
 		T4:new Matrix(4,4,0),
 		rotate2d:Matrix.Identity(3),
 		translate2d:Matrix.Identity(3),
 		scale2d:Matrix.Identity(3),
+		translate3d:Matrix.Identity(4),
 		rotate3d:Matrix.Identity(4),
 		rotateX:Matrix.Identity(4),
 		rotateY:Matrix.Identity(4),
 		rotateZ:Matrix.Identity(4),
 		scale3d:Matrix.Identity(4),
 	}
-	Matrix.instanceofTypedArray=!!(TypedArray&&TypedArray.isPrototypeOf(new Matrix(1,1)));
+	const testMatrix=new Matrix(1,1);
+	Matrix._instanceofTypedArray=!!(TypedArray&&TypedArray.isPrototypeOf(testMatrix));
 	return Matrix;
 }
 return createClass(global.Float32Array?Float32Array:Array);
