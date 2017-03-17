@@ -27,6 +27,12 @@ function createClass(Constructor){
 				this.fill(fill);
 			}
 		}
+		leftMultiply(m){
+			return this.set(Matrix.multiply(m,this,Matrix.Matrixes.T3));
+		}
+		rightMultiply(m){
+			return this.set(Matrix.multiply(this,m,Matrix.Matrixes.T3));
+		}
 		fill(n=0){
 			try{
 				super.fill(n);
@@ -48,8 +54,11 @@ function createClass(Constructor){
 		rotate2d(t){
 			return this.set(Matrix.rotate2d(this,t,Matrix.Matrixes.T3));
 		}
-		skew2d(x,y){
-			return this.set(Matrix.skew2d(this,x,y,Matrix.Matrixes.T3));
+		skewX(x){
+			return this.set(Matrix.skew2d(this,x,0,Matrix.Matrixes.T3));
+		}
+		skewY(y){
+			return this.set(Matrix.skew2d(this,0,y,Matrix.Matrixes.T3));
 		}
 		translate2d(x,y){
 			return this.set(Matrix.translate2d(this,x,y,Matrix.Matrixes.T3));
