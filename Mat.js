@@ -46,31 +46,34 @@ function createClass(Constructor){
 			return this;
 		}
 		rotate2d(t){
-			return this.set(Matrix.rotate2d(this,t,Matrix.Matrixs.T3));
+			return this.set(Matrix.rotate2d(this,t,Matrix.Matrixes.T3));
+		}
+		skew2d(x,y){
+			return this.set(Matrix.skew2d(this,x,y,Matrix.Matrixes.T3));
 		}
 		translate2d(x,y){
-			return this.set(Matrix.translate2d(this,x,y,Matrix.Matrixs.T3));
+			return this.set(Matrix.translate2d(this,x,y,Matrix.Matrixes.T3));
 		}
 		scale2d(x,y){
-			return this.set(Matrix.scale2d(this,x,y,Matrix.Matrixs.T3));
+			return this.set(Matrix.scale2d(this,x,y,Matrix.Matrixes.T3));
 		}
 		rotate3d(tx,ty,tz){
-			return this.set(Matrix.rotate3d(this,tx,ty,tz,Matrix.Matrixs.T4));
+			return this.set(Matrix.rotate3d(this,tx,ty,tz,Matrix.Matrixes.T4));
 		}
 		scale3d(x,y,z){
-			return this.set(Matrix.scale3d(this,x,y,z,Matrix.Matrixs.T4));
+			return this.set(Matrix.scale3d(this,x,y,z,Matrix.Matrixes.T4));
 		}
 		translate3d(x,y,z){
-			return this.set(Matrix.translate3d(this,x,y,z,Matrix.Matrixs.T4));
+			return this.set(Matrix.translate3d(this,x,y,z,Matrix.Matrixes.T4));
 		}
 		rotateX(t){
-			return this.set(Matrix.rotateX(this,t,Matrix.Matrixs.T4));
+			return this.set(Matrix.rotateX(this,t,Matrix.Matrixes.T4));
 		}
 		rotateY(t){
-			return this.set(Matrix.rotateY(this,t,Matrix.Matrixs.T4));
+			return this.set(Matrix.rotateY(this,t,Matrix.Matrixes.T4));
 		}
 		rotateZ(t){
-			return this.set(Matrix.rotateZ(this,t,Matrix.Matrixs.T4));
+			return this.set(Matrix.rotateZ(this,t,Matrix.Matrixes.T4));
 		}
 		clone(){
 			return new Matrix(this.row,this.column).set(this);
@@ -134,19 +137,25 @@ function createClass(Constructor){
 			return r;
 		}
 		static rotate2d(m,t,result){
-			const Mr=Matrix.Matrixs.rotate2d;
+			const Mr=Matrix.Matrixes.rotate2d;
 			Mr[0]=Mr[4]=Math.cos(t);
 			Mr[1]=-(Mr[3]=Math.sin(t));
 			return Matrix.multiply(Mr,m,result||new Matrix(3,3));
 		}
+		static skew2d(m,x,y,result){
+			const Mr=Matrix.Matrixes.skew2d;
+			Mr[1]=y;
+			Mr[3]=x;
+			return Matrix.multiply(Mr,m,result||new Matrix(3,3));
+		}
 		static scale2d(m,x,y,result){
-			const Mr=Matrix.Matrixs.scale2d;
+			const Mr=Matrix.Matrixes.scale2d;
 			Mr[0]=x;
 			Mr[4]=y;
 			return Matrix.multiply(Mr,m,result||new Matrix(3,3));
 		}
 		static translate2d(m,x,y,result){
-			const Mr=Matrix.Matrixs.translate2d;
+			const Mr=Matrix.Matrixes.translate2d;
 			Mr[2]=x;
 			Mr[5]=y;
 			return Matrix.multiply(Mr,m,result||new Matrix(3,3));
@@ -155,7 +164,7 @@ function createClass(Constructor){
 			const Xc=Math.cos(tx),Xs=Math.sin(tx),
 				Yc=Math.cos(ty),Ys=Math.sin(ty),
 				Zc=Math.cos(tz),Zs=Math.sin(tz),
-				Mr=Matrix.Matrixs.rotate3d;
+				Mr=Matrix.Matrixes.rotate3d;
 			Mr[0]=Zc*Yc;
 			Mr[1]=Zc*Ys*Xs-Zs*Xc;
 			Mr[2]=Zc*Ys*Xc+Zs*Xs;
@@ -168,32 +177,32 @@ function createClass(Constructor){
 			return Matrix.multiply(Mr,m,result||new Matrix(4,4));
 		}
 		static rotateX(m,t,result){
-			const Mr=Matrix.Matrixs.rotateX;
+			const Mr=Matrix.Matrixes.rotateX;
 			Mr[10]=Mr[5]=Math.cos(t);
 			Mr[6]=-(Mr[9]=Math.sin(t));
 			return Matrix.multiply(Mr,m,result||new Matrix(4,4));
 		}
 		static rotateY(m,t,result){
-			const Mr=Matrix.Matrixs.rotateY;
+			const Mr=Matrix.Matrixes.rotateY;
 			Mr[10]=Mr[0]=Math.cos(t);
 			Mr[8]=-(Mr[2]=Math.sin(t));
 			return Matrix.multiply(Mr,m,result||new Matrix(4,4));
 		}
 		static rotateZ(m,t,result){
-			const Mr=Matrix.Matrixs.rotateZ;
+			const Mr=Matrix.Matrixes.rotateZ;
 			Mr[5]=Mr[0]=Math.cos(t);
 			Mr[1]=-(Mr[4]=Math.sin(t));
 			return Matrix.multiply(Mr,m,result||new Matrix(4,4));
 		}
 		static scale3d(m,x,y,z,result){
-			const Mr=Matrix.Matrixs.scale3d;
+			const Mr=Matrix.Matrixes.scale3d;
 			Mr[0]=x;
 			Mr[5]=y;
 			Mr[10]=z;
 			return Matrix.multiply(Mr,m,result||new Matrix(4,4));
 		}
 		static translate3d(m,x,y,z,result){
-			const Mr=Matrix.Matrixs.translate3d;
+			const Mr=Matrix.Matrixes.translate3d;
 			Mr[12]=x;
 			Mr[13]=y;
 			Mr[14]=z;
@@ -213,12 +222,13 @@ function createClass(Constructor){
 			return createClass(Constructor);
 		}
 	}
-	Matrix.Matrixs={//do not modify these matrixes manually and dont use them
+	Matrix.Matrixes={//do not modify these matrixes manually and dont use them
 		I3:Matrix.Identity(3),
 		I4:Matrix.Identity(4),
 		T3:new Matrix(3,3,0),
 		T4:new Matrix(4,4,0),
 		rotate2d:Matrix.Identity(3),
+		skew2d:Matrix.Identity(3),
 		translate2d:Matrix.Identity(3),
 		scale2d:Matrix.Identity(3),
 		translate3d:Matrix.Identity(4),
