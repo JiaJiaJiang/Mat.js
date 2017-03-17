@@ -213,6 +213,8 @@ function createClass(Constructor){
 		}
 	}
 	Matrix.Matrixs={//do not modify these matrixes manually and dont use them
+		I3:Matrix.Identity(3),
+		I4:Matrix.Identity(4),
 		T3:new Matrix(3,3,0),
 		T4:new Matrix(4,4,0),
 		rotate2d:Matrix.Identity(3),
