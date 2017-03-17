@@ -107,14 +107,15 @@ function createClass(Constructor){
 			}
 			return r;
 		}
-		static multiplyString(a,b,array){//work out the equation for every elements,only for debug
+		static multiplyString(a,b,array,ignoreZero){//work out the equation for every elements,only for debug
 			if(a.column!==b.row)throw('wrong matrix');
 			var r=array||new Array(a.row*b.column),l,c,i,ind;
 			for(l=a.row;l--;){
 				for(c=b.column;c--;){
 					r[ind=(l*b.column+c)]='';
 					for(i=0;i<a.column;i++){
-						r[ind]+=((i?'+':'')+'('+a[l*a.column+i]+')*('+b[c+i*b.column])+')';
+						if(ignoreZero && (a[l*a.column+i]==0 ||b[c+i*b.column]==0))continue;
+						r[ind]+=(((i&&r[ind])?'+':'')+'('+a[l*a.column+i]+')*('+b[c+i*b.column])+')';
 					}
 				}
 			}
