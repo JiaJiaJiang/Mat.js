@@ -105,7 +105,7 @@ function createClass(Constructor){
 		}
 		static multiplyString(a,b,array,ignoreZero){//work out the equation for every elements,only for debug and only works with Array matrixes
 			if(a.column!==b.row)throw('wrong matrix');
-			var r=array||new Array(a.row*b.column),l,c,i,ind;
+			var r=array||Mat(a.row,b.column),l,c,i,ind;
 			for(l=a.row;l--;){
 				for(c=b.column;c--;){
 					r[ind=(l*b.column+c)]='';
