@@ -212,7 +212,7 @@ function createClass(Constructor){
 		}
 	}
 	const testArray=new Constructor(1);
-	Object.defineProperty(M,'_instanceofTypedArray',{value:!!(TypedArray&&TypedArray.isPrototypeOf(testArray))});
+	Object.defineProperty(Matrix,'_instanceofTypedArray',{value:!!(TypedArray&&TypedArray.isPrototypeOf(testArray))});
 	Object.setPrototypeOf(Matrix,Constructor.prototype);
 	function Mat(l,c,fill){
 		const M=new Constructor(l*c);
