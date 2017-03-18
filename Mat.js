@@ -20,10 +20,10 @@ function createClass(Constructor){
 	class Matrix{
 		get length(){return this._len;}
 		static leftMultiply(m){
-			return this.set(Mat.multiply(m,this,Matrix.Matrixes.T3));
+			return this.set(Mat.multiply(m,this,Mat.Matrixes.T3));
 		}
 		static rightMultiply(m){
-			return this.set(Mat.multiply(this,m,Matrix.Matrixes.T3));
+			return this.set(Mat.multiply(this,m,Mat.Matrixes.T3));
 		}
 		static fill(n){
 			arguments.length||(n=0);
@@ -41,31 +41,31 @@ function createClass(Constructor){
 			return this;
 		}
 		static rotate2d(t){
-			return this.set(Mat.rotate2d(this,t,Matrix.Matrixes.T3));
+			return this.set(Mat.rotate2d(this,t,Mat.Matrixes.T3));
 		}
 		static translate2d(x,y){
-			return this.set(Mat.translate2d(this,x,y,Matrix.Matrixes.T3));
+			return this.set(Mat.translate2d(this,x,y,Mat.Matrixes.T3));
 		}
 		static scale2d(x,y){
-			return this.set(Mat.scale2d(this,x,y,Matrix.Matrixes.T3));
+			return this.set(Mat.scale2d(this,x,y,Mat.Matrixes.T3));
 		}
 		static rotate3d(tx,ty,tz){
-			return this.set(Mat.rotate3d(this,tx,ty,tz,Matrix.Matrixes.T4));
+			return this.set(Mat.rotate3d(this,tx,ty,tz,Mat.Matrixes.T4));
 		}
 		static scale3d(x,y,z){
-			return this.set(Mat.scale3d(this,x,y,z,Matrix.Matrixes.T4));
+			return this.set(Mat.scale3d(this,x,y,z,Mat.Matrixes.T4));
 		}
 		static translate3d(x,y,z){
-			return this.set(Mat.translate3d(this,x,y,z,Matrix.Matrixes.T4));
+			return this.set(Mat.translate3d(this,x,y,z,Mat.Matrixes.T4));
 		}
 		static rotateX(t){
-			return this.set(Mat.rotateX(this,t,Matrix.Matrixes.T4));
+			return this.set(Mat.rotateX(this,t,Mat.Matrixes.T4));
 		}
 		static rotateY(t){
-			return this.set(Mat.rotateY(this,t,Matrix.Matrixes.T4));
+			return this.set(Mat.rotateY(this,t,Mat.Matrixes.T4));
 		}
 		static rotateZ(t){
-			return this.set(Mat.rotateZ(this,t,Matrix.Matrixes.T4));
+			return this.set(Mat.rotateZ(this,t,Mat.Matrixes.T4));
 		}
 		static clone(){
 			return Mat(this.row,this.column).set(this);
@@ -130,19 +130,19 @@ function createClass(Constructor){
 			return r;
 		}
 		static rotate2d(m,t,result){
-			const Mr=Matrix.Matrixes.rotate2d;
+			const Mr=Mat.Matrixes.rotate2d;
 			Mr[0]=Mr[4]=Math.cos(t);
 			Mr[1]=-(Mr[3]=Math.sin(t));
 			return Mat.multiply(Mr,m,result||Mat(3,3));
 		}
 		static scale2d(m,x,y,result){
-			const Mr=Matrix.Matrixes.scale2d;
+			const Mr=Mat.Matrixes.scale2d;
 			Mr[0]=x;
 			Mr[4]=y;
 			return Mat.multiply(Mr,m,result||Mat(3,3));
 		}
 		static translate2d(m,x,y,result){
-			const Mr=Matrix.Matrixes.translate2d;
+			const Mr=Mat.Matrixes.translate2d;
 			Mr[2]=x;
 			Mr[5]=y;
 			return Mat.multiply(Mr,m,result||Mat(3,3));
@@ -151,7 +151,7 @@ function createClass(Constructor){
 			const Xc=Math.cos(tx),Xs=Math.sin(tx),
 				Yc=Math.cos(ty),Ys=Math.sin(ty),
 				Zc=Math.cos(tz),Zs=Math.sin(tz),
-				Mr=Matrix.Matrixes.rotate3d;
+				Mr=Mat.Matrixes.rotate3d;
 			Mr[0]=Zc*Yc;
 			Mr[1]=Zc*Ys*Xs-Zs*Xc;
 			Mr[2]=Zc*Ys*Xc+Zs*Xs;
@@ -164,32 +164,32 @@ function createClass(Constructor){
 			return Mat.multiply(Mr,m,result||Mat(4,4));
 		}
 		static rotateX(m,t,result){
-			const Mr=Matrix.Matrixes.rotateX;
+			const Mr=Mat.Matrixes.rotateX;
 			Mr[10]=Mr[5]=Math.cos(t);
 			Mr[6]=-(Mr[9]=Math.sin(t));
 			return Mat.multiply(Mr,m,result||Mat(4,4));
 		}
 		static rotateY(m,t,result){
-			const Mr=Matrix.Matrixes.rotateY;
+			const Mr=Mat.Matrixes.rotateY;
 			Mr[10]=Mr[0]=Math.cos(t);
 			Mr[8]=-(Mr[2]=Math.sin(t));
 			return Mat.multiply(Mr,m,result||Mat(4,4));
 		}
 		static rotateZ(m,t,result){
-			const Mr=Matrix.Matrixes.rotateZ;
+			const Mr=Mat.Matrixes.rotateZ;
 			Mr[5]=Mr[0]=Math.cos(t);
 			Mr[1]=-(Mr[4]=Math.sin(t));
 			return Mat.multiply(Mr,m,result||Mat(4,4));
 		}
 		static scale3d(m,x,y,z,result){
-			const Mr=Matrix.Matrixes.scale3d;
+			const Mr=Mat.Matrixes.scale3d;
 			Mr[0]=x;
 			Mr[5]=y;
 			Mr[10]=z;
 			return Mat.multiply(Mr,m,result||Mat(4,4));
 		}
 		static translate3d(m,x,y,z,result){
-			const Mr=Matrix.Matrixes.translate3d;
+			const Mr=Mat.Matrixes.translate3d;
 			Mr[12]=x;
 			Mr[13]=y;
 			Mr[14]=z;
@@ -233,7 +233,7 @@ function createClass(Constructor){
 		return M;
 	}
 	Object.setPrototypeOf(Mat,staticMethods);
-	Matrix.Matrixes={//do not modify these matrixes manually and dont use them
+	Mat.Matrixes={//do not modify these matrixes manually and dont use them
 		I3:Mat.Identity(3),
 		I4:Mat.Identity(4),
 		T3:Mat(3,3,0),
