@@ -221,8 +221,12 @@ function createClass(Constructor){
 		Object.defineProperty(M,'row',{value:l});
 		Object.defineProperty(M,'column',{value:c});
 		if(arguments.length>=3){
-			if(Matrix._instanceofTypedArray&&(fill===0))return M;
-			M.fill(fill);
+			if(Matrix._instanceofTypedArray&&(fill===0)){}
+			else if(typeof fill === 'number'){
+				M.fill(fill);
+			}else if(fill.length){
+				M.set(fill);
+			}
 		}
 		return M;
 	}
