@@ -230,7 +230,7 @@ function createClass(Constructor){
 		}
 		return M;
 	}
-	Mat.__proto__=staticMethods;
+	Object.setPrototypeOf(Mat,staticMethods);
 	Matrix.Matrixes={//do not modify these matrixes manually and dont use them
 		I3:Mat.Identity(3),
 		I4:Mat.Identity(4),
