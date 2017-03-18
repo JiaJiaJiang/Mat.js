@@ -212,19 +212,18 @@ function createClass(Constructor){
 		}
 	}
 	const testArray=new Constructor(1);
-	Matrix._instanceofTypedArray=!!(TypedArray&&TypedArray.isPrototypeOf(testArray));
+	Object.defineProperty(M,'_instanceofTypedArray',{value:!!(TypedArray&&TypedArray.isPrototypeOf(testArray))});
 	Object.setPrototypeOf(Matrix,Constructor.prototype);
 	function Mat(l,c,fill){
 		const M=new Constructor(l*c);
 		Object.setPrototypeOf(M,Matrix);
-		M.row=l;
-		M.column=c;
 		Object.defineProperty(M,'length',{value:l*c});
+		Object.defineProperty(M,'row',{value:l});
+		Object.defineProperty(M,'column',{value:c});
 		if(arguments.length>=3){
 			if(Matrix._instanceofTypedArray&&(fill===0))return M;
 			M.fill(fill);
 		}
-		console.dir(M)
 		return M;
 	}
 	Mat.__proto__=staticMethods;
