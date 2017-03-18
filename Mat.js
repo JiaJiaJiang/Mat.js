@@ -17,59 +17,60 @@ const global= (0,eval)('this');
 const TypedArray=global.Float32Array&&global.Float32Array.prototype;
 
 function createClass(Constructor){
-	class Matrix extends Constructor{
-		leftMultiply(m){
+	class Matrix{
+		get length(){return this._len;}
+		static leftMultiply(m){
 			return this.set(Mat.multiply(m,this,Matrix.Matrixes.T3));
 		}
-		rightMultiply(m){
+		static rightMultiply(m){
 			return this.set(Mat.multiply(this,m,Matrix.Matrixes.T3));
 		}
-		fill(n){
+		static fill(n){
 			arguments.length||(n=0);
 			for(let i=this.length;i--;)this[i]=n;
 			return this;
 		}
-		set(arr,offset){
+		static set(arr,offset){
 			offset||(offset=0);
 			for(let i=(arr.length+offset)<=this.length?arr.length:(this.length-offset);i--;)
 				this[offset+i]=arr[i];
 			return this;
 		}
-		put(m,row,column){
+		static put(m,row,column){
 			Mat.put(this,m,row||0,column||0);
 			return this;
 		}
-		rotate2d(t){
+		static rotate2d(t){
 			return this.set(Mat.rotate2d(this,t,Matrix.Matrixes.T3));
 		}
-		translate2d(x,y){
+		static translate2d(x,y){
 			return this.set(Mat.translate2d(this,x,y,Matrix.Matrixes.T3));
 		}
-		scale2d(x,y){
+		static scale2d(x,y){
 			return this.set(Mat.scale2d(this,x,y,Matrix.Matrixes.T3));
 		}
-		rotate3d(tx,ty,tz){
+		static rotate3d(tx,ty,tz){
 			return this.set(Mat.rotate3d(this,tx,ty,tz,Matrix.Matrixes.T4));
 		}
-		scale3d(x,y,z){
+		static scale3d(x,y,z){
 			return this.set(Mat.scale3d(this,x,y,z,Matrix.Matrixes.T4));
 		}
-		translate3d(x,y,z){
+		static translate3d(x,y,z){
 			return this.set(Mat.translate3d(this,x,y,z,Matrix.Matrixes.T4));
 		}
-		rotateX(t){
+		static rotateX(t){
 			return this.set(Mat.rotateX(this,t,Matrix.Matrixes.T4));
 		}
-		rotateY(t){
+		static rotateY(t){
 			return this.set(Mat.rotateY(this,t,Matrix.Matrixes.T4));
 		}
-		rotateZ(t){
+		static rotateZ(t){
 			return this.set(Mat.rotateZ(this,t,Matrix.Matrixes.T4));
 		}
-		clone(){
+		static clone(){
 			return Mat(this.row,this.column).set(this);
 		}
-		toString(){
+		static toString(){
 			if(this.length === 0)return '';
 			for(var i=0,lines=[],tmp=[];i<this.length;i++){
 				if(i && (i%this.column === 0)){
@@ -85,7 +86,6 @@ function createClass(Constructor){
 	class staticMethods{
 		//static methods
 		static Identity(n){//return a new Identity Matrix
-			console.dir(Mat)
 			let m=Mat(n,n,0);
 			for(let i=n;i--;)m[i*n+i]=1;
 			return m;
@@ -213,15 +213,18 @@ function createClass(Constructor){
 	}
 	const testArray=new Constructor(1);
 	Matrix._instanceofTypedArray=!!(TypedArray&&TypedArray.isPrototypeOf(testArray));
+	Object.setPrototypeOf(Matrix,Constructor.prototype);
 	function Mat(l,c,fill){
-		const M=new Matrix(l*c);
-		console.dir(M)
+		const M=new Constructor(l*c);
+		Object.setPrototypeOf(M,Matrix);
 		M.row=l;
 		M.column=c;
+		Object.defineProperty(M,'length',{value:l*c});
 		if(arguments.length>=3){
 			if(Matrix._instanceofTypedArray&&(fill===0))return M;
 			M.fill(fill);
 		}
+		console.dir(M)
 		return M;
 	}
 	Mat.__proto__=staticMethods;
