@@ -18,27 +18,15 @@ const TypedArray=global.Float32Array&&global.Float32Array.prototype;
 
 function createClass(Constructor){
 	class Matrix extends Constructor{
-		constructor(l,c,fill){
-			super(l*c);
-			this.row=l;
-			this.column=c;
-			if(arguments.length>=3){
-				if(Matrix._instanceofTypedArray&&(fill===0))return;
-				this.fill(fill);
-			}
-		}
 		leftMultiply(m){
-			return this.set(Matrix.multiply(m,this,Matrix.Matrixes.T3));
+			return this.set(Mat.multiply(m,this,Matrix.Matrixes.T3));
 		}
 		rightMultiply(m){
-			return this.set(Matrix.multiply(this,m,Matrix.Matrixes.T3));
+			return this.set(Mat.multiply(this,m,Matrix.Matrixes.T3));
 		}
-		fill(n=0){
-			try{
-				super.fill(n);
-			}catch(e){
-				for(let i=this.length;i--;)this[i]=n;
-			}
+		fill(n){
+			arguments.length||(n=0);
+			for(let i=this.length;i--;)this[i]=n;
 			return this;
 		}
 		set(arr,offset){
@@ -47,45 +35,39 @@ function createClass(Constructor){
 				this[offset+i]=arr[i];
 			return this;
 		}
-		put(m,row=0,column=0){
-			Matrix.put(this,m,row,column);
+		put(m,row,column){
+			Mat.put(this,m,row||0,column||0);
 			return this;
 		}
 		rotate2d(t){
-			return this.set(Matrix.rotate2d(this,t,Matrix.Matrixes.T3));
-		}
-		skewX(x){
-			return this.set(Matrix.skew2d(this,x,0,Matrix.Matrixes.T3));
-		}
-		skewY(y){
-			return this.set(Matrix.skew2d(this,0,y,Matrix.Matrixes.T3));
+			return this.set(Mat.rotate2d(this,t,Matrix.Matrixes.T3));
 		}
 		translate2d(x,y){
-			return this.set(Matrix.translate2d(this,x,y,Matrix.Matrixes.T3));
+			return this.set(Mat.translate2d(this,x,y,Matrix.Matrixes.T3));
 		}
 		scale2d(x,y){
-			return this.set(Matrix.scale2d(this,x,y,Matrix.Matrixes.T3));
+			return this.set(Mat.scale2d(this,x,y,Matrix.Matrixes.T3));
 		}
 		rotate3d(tx,ty,tz){
-			return this.set(Matrix.rotate3d(this,tx,ty,tz,Matrix.Matrixes.T4));
+			return this.set(Mat.rotate3d(this,tx,ty,tz,Matrix.Matrixes.T4));
 		}
 		scale3d(x,y,z){
-			return this.set(Matrix.scale3d(this,x,y,z,Matrix.Matrixes.T4));
+			return this.set(Mat.scale3d(this,x,y,z,Matrix.Matrixes.T4));
 		}
 		translate3d(x,y,z){
-			return this.set(Matrix.translate3d(this,x,y,z,Matrix.Matrixes.T4));
+			return this.set(Mat.translate3d(this,x,y,z,Matrix.Matrixes.T4));
 		}
 		rotateX(t){
-			return this.set(Matrix.rotateX(this,t,Matrix.Matrixes.T4));
+			return this.set(Mat.rotateX(this,t,Matrix.Matrixes.T4));
 		}
 		rotateY(t){
-			return this.set(Matrix.rotateY(this,t,Matrix.Matrixes.T4));
+			return this.set(Mat.rotateY(this,t,Matrix.Matrixes.T4));
 		}
 		rotateZ(t){
-			return this.set(Matrix.rotateZ(this,t,Matrix.Matrixes.T4));
+			return this.set(Mat.rotateZ(this,t,Matrix.Matrixes.T4));
 		}
 		clone(){
-			return new Matrix(this.row,this.column).set(this);
+			return Mat(this.row,this.column).set(this);
 		}
 		toString(){
 			if(this.length === 0)return '';
@@ -99,16 +81,18 @@ function createClass(Constructor){
 			lines.push(tmp.join('	'));
 			return lines.join('\n');
 		}
-
+	}
+	class staticMethods{
 		//static methods
 		static Identity(n){//return a new Identity Matrix
-			let m=new Matrix(n,n,0);
+			console.dir(Mat)
+			let m=Mat(n,n,0);
 			for(let i=n;i--;)m[i*n+i]=1;
 			return m;
 		}
 		static multiply(a,b,result){
 			if(a.column!==b.row)throw('wrong matrix');
-			let row=a.row,column=Math.min(a.column,b.column),r=result||new Matrix(row,column),c,i,ind;
+			let row=a.row,column=Math.min(a.column,b.column),r=result||Mat(row,column),c,i,ind;
 			for(let l=row;l--;){
 				for(c=column;c--;){
 					r[ind=(l*r.column+c)]=0;
@@ -119,7 +103,7 @@ function createClass(Constructor){
 			}
 			return r;
 		}
-		static multiplyString(a,b,array,ignoreZero){//work out the equation for every elements,only for debug
+		static multiplyString(a,b,array,ignoreZero){//work out the equation for every elements,only for debug and only works with Array matrixes
 			if(a.column!==b.row)throw('wrong matrix');
 			var r=array||new Array(a.row*b.column),l,c,i,ind;
 			for(l=a.row;l--;){
@@ -135,13 +119,13 @@ function createClass(Constructor){
 		}
 		static add(a,b,result){
 			if(a.column!==b.column || a.row!==b.row)throw('wrong matrix');
-			let r=result||new Matrix(a.row,a.column);
+			let r=result||Mat(a.row,b.column);
 			for(let i=a.length;i--;)r[i]=a[i]+b[i];
 			return r;
 		}
 		static minus(a,b,result){
 			if(a.column!==b.column || a.row!==b.row)throw('wrong matrix');
-			let r=result||new Matrix(a.row,a.column);
+			let r=result||Mat(a.row,b.column);
 			for(let i=a.length;i--;)r[i]=a[i]-b[i];
 			return r;
 		}
@@ -149,25 +133,19 @@ function createClass(Constructor){
 			const Mr=Matrix.Matrixes.rotate2d;
 			Mr[0]=Mr[4]=Math.cos(t);
 			Mr[1]=-(Mr[3]=Math.sin(t));
-			return Matrix.multiply(Mr,m,result||new Matrix(3,3));
-		}
-		static skew2d(m,x,y,result){
-			const Mr=Matrix.Matrixes.skew2d;
-			Mr[1]=y;
-			Mr[3]=x;
-			return Matrix.multiply(Mr,m,result||new Matrix(3,3));
+			return Mat.multiply(Mr,m,result||Mat(3,3));
 		}
 		static scale2d(m,x,y,result){
 			const Mr=Matrix.Matrixes.scale2d;
 			Mr[0]=x;
 			Mr[4]=y;
-			return Matrix.multiply(Mr,m,result||new Matrix(3,3));
+			return Mat.multiply(Mr,m,result||Mat(3,3));
 		}
 		static translate2d(m,x,y,result){
 			const Mr=Matrix.Matrixes.translate2d;
 			Mr[2]=x;
 			Mr[5]=y;
-			return Matrix.multiply(Mr,m,result||new Matrix(3,3));
+			return Mat.multiply(Mr,m,result||Mat(3,3));
 		}
 		static rotate3d(m,tx,ty,tz,result){
 			const Xc=Math.cos(tx),Xs=Math.sin(tx),
@@ -183,42 +161,44 @@ function createClass(Constructor){
 			Mr[8]=-Ys;
 			Mr[9]=Yc*Xs;
 			Mr[10]=Yc*Xc;
-			return Matrix.multiply(Mr,m,result||new Matrix(4,4));
+			return Mat.multiply(Mr,m,result||Mat(4,4));
 		}
 		static rotateX(m,t,result){
 			const Mr=Matrix.Matrixes.rotateX;
 			Mr[10]=Mr[5]=Math.cos(t);
 			Mr[6]=-(Mr[9]=Math.sin(t));
-			return Matrix.multiply(Mr,m,result||new Matrix(4,4));
+			return Mat.multiply(Mr,m,result||Mat(4,4));
 		}
 		static rotateY(m,t,result){
 			const Mr=Matrix.Matrixes.rotateY;
 			Mr[10]=Mr[0]=Math.cos(t);
 			Mr[8]=-(Mr[2]=Math.sin(t));
-			return Matrix.multiply(Mr,m,result||new Matrix(4,4));
+			return Mat.multiply(Mr,m,result||Mat(4,4));
 		}
 		static rotateZ(m,t,result){
 			const Mr=Matrix.Matrixes.rotateZ;
 			Mr[5]=Mr[0]=Math.cos(t);
 			Mr[1]=-(Mr[4]=Math.sin(t));
-			return Matrix.multiply(Mr,m,result||new Matrix(4,4));
+			return Mat.multiply(Mr,m,result||Mat(4,4));
 		}
 		static scale3d(m,x,y,z,result){
 			const Mr=Matrix.Matrixes.scale3d;
 			Mr[0]=x;
 			Mr[5]=y;
 			Mr[10]=z;
-			return Matrix.multiply(Mr,m,result||new Matrix(4,4));
+			return Mat.multiply(Mr,m,result||Mat(4,4));
 		}
 		static translate3d(m,x,y,z,result){
 			const Mr=Matrix.Matrixes.translate3d;
 			Mr[12]=x;
 			Mr[13]=y;
 			Mr[14]=z;
-			return Matrix.multiply(Mr,m,result||new Matrix(4,4));
+			return Mat.multiply(Mr,m,result||Mat(4,4));
 		}
-		static put(m,sub,row=0,column=0){
+		static put(m,sub,row,column){
 			let c,ind,i;
+			row||(row=0);
+			column||(column=0);
 			for(let l=sub.row;l--;){
 				if(l+row>=m.row)continue;
 				for(c=sub.column;c--;){
@@ -231,25 +211,36 @@ function createClass(Constructor){
 			return createClass(Constructor);
 		}
 	}
-	Matrix.Matrixes={//do not modify these matrixes manually and dont use them
-		I3:Matrix.Identity(3),
-		I4:Matrix.Identity(4),
-		T3:new Matrix(3,3,0),
-		T4:new Matrix(4,4,0),
-		rotate2d:Matrix.Identity(3),
-		skew2d:Matrix.Identity(3),
-		translate2d:Matrix.Identity(3),
-		scale2d:Matrix.Identity(3),
-		translate3d:Matrix.Identity(4),
-		rotate3d:Matrix.Identity(4),
-		rotateX:Matrix.Identity(4),
-		rotateY:Matrix.Identity(4),
-		rotateZ:Matrix.Identity(4),
-		scale3d:Matrix.Identity(4),
+	const testArray=new Constructor(1);
+	Matrix._instanceofTypedArray=!!(TypedArray&&TypedArray.isPrototypeOf(testArray));
+	function Mat(l,c,fill){
+		const M=new Matrix(l*c);
+		console.dir(M)
+		M.row=l;
+		M.column=c;
+		if(arguments.length>=3){
+			if(Matrix._instanceofTypedArray&&(fill===0))return M;
+			M.fill(fill);
+		}
+		return M;
 	}
-	const testMatrix=new Matrix(1,1);
-	Matrix._instanceofTypedArray=!!(TypedArray&&TypedArray.isPrototypeOf(testMatrix));
-	return Matrix;
+	Mat.__proto__=staticMethods;
+	Matrix.Matrixes={//do not modify these matrixes manually and dont use them
+		I3:Mat.Identity(3),
+		I4:Mat.Identity(4),
+		T3:Mat(3,3,0),
+		T4:Mat(4,4,0),
+		rotate2d:Mat.Identity(3),
+		translate2d:Mat.Identity(3),
+		scale2d:Mat.Identity(3),
+		translate3d:Mat.Identity(4),
+		rotate3d:Mat.Identity(4),
+		rotateX:Mat.Identity(4),
+		rotateY:Mat.Identity(4),
+		rotateZ:Mat.Identity(4),
+		scale3d:Mat.Identity(4),
+	}
+	return Mat;
 }
 return createClass(global.Float32Array?Float32Array:Array);
 });
