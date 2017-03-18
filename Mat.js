@@ -77,7 +77,7 @@ function createClass(Constructor){
 					lines.push(tmp.join('\t'));
 					tmp.length=0;
 				}
-				tmp.push(this[i]);
+				tmp.push(this[i]||0);
 			}
 			lines.push(tmp.join('	'));
 			return lines.join('\n');
