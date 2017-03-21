@@ -68,7 +68,7 @@ function createClass(Constructor){
 			return this.set(Mat.rotateZ(this,t,Mat.Matrixes.T4));
 		}
 		static clone(){
-			return Mat(this.row,this.column).set(this);
+			return Mat(this.row,this.column,this);
 		}
 		static toString(){
 			if(this.length === 0)return '';
@@ -234,6 +234,7 @@ function createClass(Constructor){
 	}
 	Object.setPrototypeOf(Mat,staticMethods);
 	Mat.Matrixes={//do not modify these matrixes manually and dont use them
+		I2:Mat.Identity(2),
 		I3:Mat.Identity(3),
 		I4:Mat.Identity(4),
 		T3:Mat(3,3,0),
