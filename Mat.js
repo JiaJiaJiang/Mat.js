@@ -90,6 +90,22 @@ function createClass(Constructor){
 			for(let i=n;i--;)m[i*n+i]=1;
 			return m;
 		}
+		static Perspective(fovy,aspect,znear,zfar,result){
+			let y1=znear*Math.tan(fovy*Math.PI/360),
+				y0=-y1,
+				x0=y0*aspect,
+				x1=y1*aspect,
+				m=result||Mat(3,3,0);
+		    m[0]=2*znear/(x1-x0);
+		    m[2]=(x1+x0)/(x1-x0);
+		    m[5]=2*znear/(y1-y0);
+		    m[6]=(y1+y0)/(y1-y0);
+		    m[10]=-(zfar+znear)/(zfar-znear);
+		    m[11]=-2*zfar*znear/(zfar-znear);
+		    m[14]=-1;
+		    if(result)m[1]=m[3]=m[4]=m[7]=m[8]=m[9]=m[12]=m[13]=m[15]=0;
+		    return m;
+		}
 		static multiply(a,b,result){
 			if(a.column!==b.row)throw('wrong matrix');
 			let row=a.row,column=Math.min(a.column,b.column),r=result||Mat(row,column),c,i,ind;

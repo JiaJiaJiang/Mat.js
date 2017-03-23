@@ -42,6 +42,16 @@ Mat(3,3,另一个矩阵) //创建一个3x3矩阵，并用另一个矩阵填充
 
 **返回一个新的单位矩阵。**
 
+### Mat.Perspective(fovy,aspect,znear,zfar,result)(n)
+透视矩阵
+
+* fovy : 视角
+* aspect : 宽高比
+* znear : 近截面出距离
+* zfar : 远截面距离
+* result : （可选）用于保存结果的矩阵，只能为4x4矩阵。如果未指定，将生成一个新的矩阵。
+
+**返回结果矩阵。**
 
 ### Mat.multiply(a,b[,result])
 矩阵相乘
