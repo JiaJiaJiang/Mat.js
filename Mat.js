@@ -95,7 +95,7 @@ function createClass(Constructor){
 				y0=-y1,
 				x0=y0*aspect,
 				x1=y1*aspect,
-				m=result||Mat(3,3,0);
+				m=result||Mat(4,4,0);
 		    m[0]=2*znear/(x1-x0);
 		    m[2]=(x1+x0)/(x1-x0);
 		    m[5]=2*znear/(y1-y0);
