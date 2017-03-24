@@ -42,7 +42,7 @@ Mat(3,3,另一个矩阵) //创建一个3x3矩阵，并用另一个矩阵填充
 
 **返回一个新的单位矩阵。**
 
-### Mat.Perspective(fovy,aspect,znear,zfar,result)(n)
+### Mat.Perspective(fovy,aspect,znear,zfar[,result])(n)
 透视矩阵
 
 * fovy : 视角
@@ -72,7 +72,7 @@ Mat(3,3,另一个矩阵) //创建一个3x3矩阵，并用另一个矩阵填充
 **返回结果矩阵。**
 
 
-### Mat.add(a,b,result)
+### Mat.add(a,b[,result])
 矩阵按元素相加
 
 * a,b : 参与加法的矩阵
@@ -81,7 +81,7 @@ Mat(3,3,另一个矩阵) //创建一个3x3矩阵，并用另一个矩阵填充
 **返回结果矩阵。**
 
 
-### Mat.minus(a,b,result)
+### Mat.minus(a,b[,result])
 矩阵按元素相减
 
 * a,b : 参与减法的矩阵
@@ -90,7 +90,7 @@ Mat(3,3,另一个矩阵) //创建一个3x3矩阵，并用另一个矩阵填充
 **返回结果矩阵。**
 
 
-### Mat.rotate2d(m,t,result)
+### Mat.rotate2d(m,t[,result])
 计算2D旋转矩阵(仅适用于3x3矩阵)
 
 * m : 基础矩阵
@@ -100,7 +100,7 @@ Mat(3,3,另一个矩阵) //创建一个3x3矩阵，并用另一个矩阵填充
 **返回结果矩阵。**
 
 
-### Mat.scale2d(m,x,y,result)
+### Mat.scale2d(m,x,y[,result])
 计算2D缩放矩阵(仅适用于3x3矩阵)
 
 * m : 基础矩阵
@@ -111,7 +111,7 @@ Mat(3,3,另一个矩阵) //创建一个3x3矩阵，并用另一个矩阵填充
 **返回结果矩阵。**
 
 
-### Mat.translate2d(m,x,y,result)
+### Mat.translate2d(m,x,y[,result])
 计算2D位移矩阵(仅适用于3x3矩阵)
 
 * m : 基础矩阵
@@ -122,7 +122,7 @@ Mat(3,3,另一个矩阵) //创建一个3x3矩阵，并用另一个矩阵填充
 **返回结果矩阵。**
 
 
-### Mat.rotate3d(m,tx,ty,tz,result)
+### Mat.rotate3d(m,tx,ty,tz[,result])
 计算3D旋转矩阵(仅适用于4x4矩阵)
 
 * m : 基础矩阵
@@ -134,7 +134,7 @@ Mat(3,3,另一个矩阵) //创建一个3x3矩阵，并用另一个矩阵填充
 **返回结果矩阵。**
 
 
-### Mat.rotateX(m,t,result)
+### Mat.rotateX(m,t[,result])
 计算3D绕x轴旋转矩阵(仅适用于4x4矩阵)
 
 * m : 基础矩阵
@@ -144,7 +144,7 @@ Mat(3,3,另一个矩阵) //创建一个3x3矩阵，并用另一个矩阵填充
 **返回结果矩阵。**
 
 
-### Mat.rotateY(m,t,result)
+### Mat.rotateY(m,t[,result])
 计算3D绕y轴旋转矩阵(仅适用于4x4矩阵)
 
 * m : 基础矩阵
@@ -154,7 +154,7 @@ Mat(3,3,另一个矩阵) //创建一个3x3矩阵，并用另一个矩阵填充
 **返回结果矩阵。**
 
 
-### Mat.rotateZ(m,t,result)
+### Mat.rotateZ(m,t[,result])
 计算3D绕z轴旋转矩阵(仅适用于4x4矩阵)
 
 * m : 基础矩阵
@@ -164,7 +164,7 @@ Mat(3,3,另一个矩阵) //创建一个3x3矩阵，并用另一个矩阵填充
 **返回结果矩阵。**
 
 
-### Mat.scale3d(m,x,y,z,result)
+### Mat.scale3d(m,x,y,z[,result])
 计算3D缩放矩阵(仅适用于4x4矩阵)
 
 * m : 基础矩阵
@@ -176,7 +176,7 @@ Mat(3,3,另一个矩阵) //创建一个3x3矩阵，并用另一个矩阵填充
 **返回结果矩阵。**
 
 
-### Mat.translate3d(m,x,y,z,result)
+### Mat.translate3d(m,x,y,z[,result])
 计算3D位移矩阵(仅适用于4x4矩阵)
 
 * m : 基础矩阵
