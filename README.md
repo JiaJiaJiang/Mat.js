@@ -258,14 +258,17 @@ var Matrix=Mat(3,3);
 
 ### Matrix.leftMultiply(m)
 在左边乘一个矩阵m，结果存入原矩阵。
+
 **返回原矩阵对象。**
 
 ### Matrix.rightMultiply(m)
 在右边乘一个矩阵m，结果存入原矩阵。
+
 **返回原矩阵对象。**
 
 ### Matrix.fill(n)
 将矩阵所有元素填充为n。
+
 **返回原矩阵对象。**
 ```
 Mat(3,3).fill(1)
@@ -280,6 +283,7 @@ Mat(3,3,1)
 
 ### Matrix.set(arr,offset=1)
 将数组arr放到从offset开始的位置。（由于此库的矩阵实质也是数组，所以可以使用此方法填充矩阵）
+
 **返回原矩阵对象。**
 
 #### 示例
@@ -296,6 +300,7 @@ Mat(3,3,[1,0,0,0,1,0,0,0,1])
 
 ### Matrix.put(m,row=0,column=0)
 调用`Mat.put(Matrix,m,row,column)`
+
 **返回原矩阵对象。**
 
 ### Matrix.clone()
@@ -303,30 +308,37 @@ Mat(3,3,[1,0,0,0,1,0,0,0,1])
 
 ### Matrix.rotate2d(t)
 调用`Mat.rotate2d`将此矩阵二维旋转t弧度。
+
 **返回原矩阵对象。**
 
 ### Matrix.translate2d(x,y)
 调用`Mat.translate2d`将此矩阵进行二维平移变换。
+
 **返回原矩阵对象。**
 
 ### Matrix.scale2d(x,y)
 调用`Mat.scale2d`将此矩阵进行二维平移变换。
+
 **返回原矩阵对象。**
 
 ### Matrix.rotate3d(tx,ty,tz)
 调用`Mat.rotate3d`将此矩阵进行三维旋转变换。
+
 **返回原矩阵对象。**
 
 ### Matrix.scale3d(x,y,z)
 调用`Mat.scale3d`将此矩阵进行三维缩放变换。
+
 **返回原矩阵对象。**
 
 ### Matrix.translate3d(x,y,z)
 调用`Mat.translate3d`将此矩阵进行三维平移变换。
+
 **返回原矩阵对象。**
 
 ### Matrix.rotateX|rotateY|rotateZ(t)
 调用`Mat.rotateX|rotateY|rotateZ`将此矩阵进行三维绕轴旋转变换。
+
 **返回原矩阵对象。**
 
 ### Matrix.toString()
