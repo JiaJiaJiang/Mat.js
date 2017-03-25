@@ -20,10 +20,10 @@ function createClass(Constructor){
 	class Matrix{
 		get length(){return this._len;}
 		static leftMultiply(m){
-			return this.set(Mat.multiply(m,this,Mat.Matrixes.T3));
+			return this.set(Mat.multiply(m,this,Mat(m.row,this.column)));
 		}
 		static rightMultiply(m){
-			return this.set(Mat.multiply(this,m,Mat.Matrixes.T3));
+			return this.set(Mat.multiply(this,m,Mat(this.row,m,column)));
 		}
 		static fill(n){
 			arguments.length||(n=0);
