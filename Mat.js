@@ -16,6 +16,12 @@ LGPL license
 const global= (0,eval)('this');
 const TypedArray=global.Float32Array&&global.Float32Array.prototype;
 
+
+if(!Object.setPrototypeOf)
+Object.setPrototypeOf=function(obj,proto){
+	return obj.__proto__=proto;
+}
+
 function createClass(Constructor){
 	class Matrix{
 		get length(){return this._len;}
@@ -227,10 +233,15 @@ function createClass(Constructor){
 	Object.defineProperty(Matrix,'_instanceofTypedArray',{value:!!(TypedArray&&TypedArray.isPrototypeOf(testArray))});
 	testArray=null;
 
-	Object.setPrototypeOf(Matrix,Constructor.prototype);
+	if(Matrix.__proto__)
+		Object.setPrototypeOf(Matrix,Constructor.prototype);
 	function Mat(l,c,fill){
 		const M=new Constructor(l*c);
-		Object.setPrototypeOf(M,Matrix);
+		if(Matrix.__proto__){
+			Object.setPrototypeOf(M,Matrix);
+		}else{
+			for(var n in Constructor.prototype)M[n]=Constructor.prototype[n];
+		}
 		Object.defineProperty(M,'length',{value:l*c});
 		Object.defineProperty(M,'row',{value:l});
 		Object.defineProperty(M,'column',{value:c});
@@ -244,7 +255,11 @@ function createClass(Constructor){
 		}
 		return M;
 	}
-	Object.setPrototypeOf(Mat,staticMethods);
+	if(Mat.__proto__){
+		Object.setPrototypeOf(Mat,staticMethods);
+	}else{
+		for(var n in staticMethods)Mat[n]=staticMethods[n];
+	}
 	Mat.Matrixes={//do not modify these matrixes manually and dont use them
 		I2:Mat.Identity(2),
 		I3:Mat.Identity(3),
@@ -265,8 +280,3 @@ function createClass(Constructor){
 }
 return createClass(global.Float32Array?Float32Array:Array);
 });
-
-if(!Object.setPrototypeOf)
-Object.setPrototypeOf=function(obj,proto){
-	return obj.__proto__=proto;
-}
