@@ -265,3 +265,8 @@ function createClass(Constructor){
 }
 return createClass(global.Float32Array?Float32Array:Array);
 });
+
+if(!Object.setPrototypeOf)
+Object.setPrototypeOf=function(obj,proto){
+	return obj.__proto__=proto;
+}
