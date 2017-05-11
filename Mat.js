@@ -16,12 +16,6 @@ LGPL license
 const global= (0,eval)('this');
 const TypedArray=global.Float32Array&&global.Float32Array.prototype;
 
-
-if(!Object.setPrototypeOf)
-Object.setPrototypeOf=function(obj,proto){
-	return obj.__proto__=proto;
-}
-
 function createClass(Constructor){
 	class Matrix{
 		constructor(l,c,fill=0){
