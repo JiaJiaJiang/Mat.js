@@ -14,7 +14,7 @@ LGPL license
 	}
 })(function(){
 const global= (0,eval)('this');
-const TypedArray=global.Float32Array&&global.Float32Array.prototype;
+const TypedArray=global.Float32Array&&global.Float32Array.prototype.constructor.__proto__;
 
 function createClass(Constructor){
 	class Matrix{
@@ -241,9 +241,7 @@ function createClass(Constructor){
 		}
 	}
 
-	var testArray=new Constructor(1);
-	Object.defineProperty(Matrix,'_instanceofTypedArray',{value:!!(TypedArray&&TypedArray.isPrototypeOf(testArray))});
-	testArray=null;
+	Object.defineProperty(Matrix,'_instanceofTypedArray',{value:!!(TypedArray&&TypedArray.isPrototypeOf(Constructor))});
 
 	Matrix.Matrixes={//do not modify these matrixes manually and dont use them
 		I2:Matrix.Identity(2),
