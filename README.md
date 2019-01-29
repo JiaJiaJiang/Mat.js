@@ -1,7 +1,7 @@
 # Mat.js
 *基于矩阵对象的矩阵运算库*
 
-![logo](https://jiajiajiang.github.io/staticRepo/Mat.js/logo.png)
+![logo](https://jiajiajiang.github.io/staticRepo/Mat.js/logo.jpg)
 
 # 简介
 * 本库可以使用不同的数组构造矩阵类，如`Array`，`Float32Array`，`Float64Array`等（默认为`Float32Array`类矩阵）。
