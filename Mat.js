@@ -107,7 +107,6 @@ function createClass(Constructor){
 		}
 		static Perspective(fovy,aspect,znear,zfar,result){
 			var _a=1/Math.tan(fovy*Math.PI/360),
-				x1=y1*aspect,
 				m=result||new Matrix(4,4,0),
 				arr=m.array;
 			arr[0]=_a/aspect;
