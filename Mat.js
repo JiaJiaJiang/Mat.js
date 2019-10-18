@@ -106,16 +106,15 @@ function createClass(Constructor){
 			return m;
 		}
 		static Perspective(fovy,aspect,znear,zfar,result){
-			var y1=znear*Math.tan(fovy*Math.PI/360.0),
+			var _a=1/Math.tan(fovy*Math.PI/360),
 				x1=y1*aspect,
 				m=result||new Matrix(4,4,0),
 				arr=m.array;
-
-			arr[0]=2*znear/(x1+x1);
-			arr[5]=2*znear/(y1+y1);
-			arr[10]=-(zfar+znear)/(zfar-znear);
-			arr[14]=-2*zfar*znear/(zfar-znear);
-			arr[11]=-1;
+			arr[0]=_a/aspect;
+			arr[5]=_a;
+			arr[10]=zfar/(zfar-znear);
+			arr[11]=1
+			arr[14]=(zfar*znear)/(znear-zfar);
 		    if(result)arr[1]=arr[2]=arr[3]=arr[4]=arr[6]=arr[7]=arr[8]=arr[9]=arr[12]=arr[13]=arr[15]=0;
 		    return m;
 		}
