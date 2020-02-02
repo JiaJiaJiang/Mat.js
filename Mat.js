@@ -38,7 +38,7 @@ function createClass(Constructor){
 			return this.set(Matrix.multiply(m,this,new Matrix(m.row,this.column)));
 		}
 		rightMultiply(m){
-			return this.set(Matrix.multiply(this,m,new Matrix(this.row,m,column)));
+			return this.set(Matrix.multiply(this,m,new Matrix(this.row,m.column)));
 		}
 		fill(n){
 			arguments.length||(n=0);
