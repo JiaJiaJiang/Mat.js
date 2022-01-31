@@ -20,8 +20,8 @@ function createClass(Constructor){
 	class Matrix{
 		constructor(l,c,fill=0){
 			this.array=new Constructor(l*c);
-			Object.defineProperty(this.array,'row',{value:l});
-			Object.defineProperty(this.array,'column',{value:c});
+			this.row=l;
+			this.column=c;
 			if(arguments.length==3){
 				if(Matrix._instanceofTypedArray&&(fill===0)){}
 				else if(typeof fill === 'number'){
@@ -32,8 +32,6 @@ function createClass(Constructor){
 			}
 		}
 		get length(){return this.array.length;}
-		get row(){return this.array.row;}
-		get column(){return this.array.column;}
 		leftMultiply(m){
 			return this.set(Matrix.multiply(m,this,new Matrix(m.row,this.column)));
 		}
@@ -61,6 +59,11 @@ function createClass(Constructor){
 		}
 		translate2d(x,y){
 			return this.set(Matrix.translate2d(this,x,y,Matrix.Matrixes.T3));
+		}
+		transpose(){
+			if(this.row!==this.column)
+				throw(new Error('cannot transpose to different rows or columns'));
+			return this.set(Matrix.transpose(this));
 		}
 		scale2d(x,y){
 			return this.set(Matrix.scale2d(this,x,y,Matrix.Matrixes.T3));
@@ -105,6 +108,16 @@ function createClass(Constructor){
 			for(let i=n;i--;)m.array[i*n+i]=1;
 			return m;
 		}
+		static transpose(m,result){
+			let R=m.row,C=m.column;
+			var m2=result||new Matrix(C,R,0);
+			for(let r=0;r<R;r++){
+				for(let c=0;c<C;c++){
+					m2.array[c*R+r]=m.array[r*C+c];
+				}
+			}
+			return m2;
+		}
 		static Perspective(fovy,aspect,znear,zfar,result){
 			var _a=1/Math.tan(fovy*Math.PI/360),
 				m=result||new Matrix(4,4,0),
@@ -112,8 +125,8 @@ function createClass(Constructor){
 			arr[0]=_a/aspect;
 			arr[5]=_a;
 			arr[10]=zfar/(zfar-znear);
-			arr[11]=1
-			arr[14]=(zfar*znear)/(znear-zfar);
+			arr[11]=(zfar*znear)/(znear-zfar);
+			arr[14]=1;
 		    if(result)arr[1]=arr[2]=arr[3]=arr[4]=arr[6]=arr[7]=arr[8]=arr[9]=arr[12]=arr[13]=arr[15]=0;
 		    return m;
 		}
@@ -217,9 +230,9 @@ function createClass(Constructor){
 		}
 		static translate3d(m,x,y,z,result){
 			const Mr=Matrix.Matrixes.translate3d;
-			Mr.array[12]=x;
-			Mr.array[13]=y;
-			Mr.array[14]=z;
+			Mr.array[3]=x;
+			Mr.array[7]=y;
+			Mr.array[11]=z;
 			return Matrix.multiply(Mr,m,result||new Matrix(4,4));
 		}
 		static put(m,sub,row,column){
